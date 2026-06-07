@@ -1,1 +1,25 @@
-if(!self.define){let e,s={};const n=(n,i)=>(n=new URL(n+".js",i).href,s[n]||new Promise(s=>{if("document"in self){const e=document.createElement("script");e.src=n,e.onload=s,document.head.appendChild(e)}else e=n,importScripts(n),s()}).then(()=>{let e=s[n];if(!e)throw new Error(`Module ${n} didn’t register its module`);return e}));self.define=(i,t)=>{const o=e||("document"in self?document.currentScript.src:"")||location.href;if(s[o])return;let r={};const l=e=>n(e,o),c={module:{uri:o},exports:r,require:l};s[o]=Promise.all(i.map(e=>c[e]||l(e))).then(e=>(t(...e),r))}}define(["./workbox-dcde9eb3"],function(e){"use strict";self.skipWaiting(),e.clientsClaim(),e.precacheAndRoute([{url:"registerSW.js",revision:"402b66900e731ca748771b6fc5e7a068"},{url:"index.html",revision:"620342ea3b46d125d66bf68d670d0ff9"},{url:"icon.svg",revision:"65c7ef8826759d79b4095bc5ef2aa934"},{url:"assets/web-C1EHUXUK.js",revision:null},{url:"assets/web-BWq3nG1N.js",revision:null},{url:"assets/index-BSgV_XE8.css",revision:null},{url:"assets/index-agFECFYa.js",revision:null},{url:"icon.svg",revision:"65c7ef8826759d79b4095bc5ef2aa934"},{url:"manifest.webmanifest",revision:"b544ea304ffc141132191a1aea9d2e29"}],{}),e.cleanupOutdatedCaches(),e.registerRoute(new e.NavigationRoute(e.createHandlerBoundToURL("index.html"))),e.registerRoute(({url:e})=>"https://fonts.googleapis.com"===e.origin||"https://fonts.gstatic.com"===e.origin,new e.CacheFirst({cacheName:"google-fonts",plugins:[new e.ExpirationPlugin({maxEntries:30,maxAgeSeconds:31536e3})]}),"GET")});
+
+self.addEventListener('install', (e) => {
+  self.skipWaiting();
+});
+self.addEventListener('activate', (e) => {
+  self.registration.unregister()
+    .then(() => self.clients.matchAll())
+    .then((clients) => {
+      clients.forEach((client) => {
+        if (client instanceof WindowClient)
+          client.navigate(client.url);
+      });
+      return Promise.resolve();
+    })
+    .then(() => {
+      self.caches.keys().then((cacheNames) => {
+        Promise.all(
+          cacheNames.map((cacheName) => {
+            return self.caches.delete(cacheName);
+          }),
+        );
+      })
+    });
+});
+    
