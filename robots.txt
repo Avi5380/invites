@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hazmana.beitar24.co.il/sitemap.xml
